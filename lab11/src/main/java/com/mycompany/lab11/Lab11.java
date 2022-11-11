@@ -21,47 +21,17 @@ import java.util.logging.Logger;
  */
 public class Lab11 {
 
-    static private String fileName = "jdbc:sqlite:comp20081.db";
-    static private int timeout = 30;
-    static private String dataBaseName = "COMP20081";
-    static private String dataBaseTableName = "Users";
-    static Connection connection = null;
-
+    private String fileName = "jdbc:sqlite:comp20081.db";
+    private int timeout = 30;
+    private String dataBaseName = "COMP20081";
+    private String dataBaseTableName = "Users";
+    Connection connection = null;
+    
     /**
-     * @brief main method that populates the dataset, retrieves values from the
-     * dataset and attempts to authenticate
-     * @param[in] argv - input arguments
+     * @brief create a new table
+     * @param tableName name of type String
      */
-    public static void main(String[] args) {
-        log("-------- Simple Tutorial on how to make JDBC connection to SQLite DB ------------");
-        log("\n---------- Drop table ----------");
-        delTable(dataBaseTableName);
-        log("\n---------- Create table ----------");
-        createTable(dataBaseTableName);
-        log("\n---------- Adding Users ----------");
-        addDataToDB("ntu-user", "1234");
-        addDataToDB("ntu-user2", "1255");
-        addDataToDB("ntu-user3", "4255");
-        log("\n---------- get Data from the Table ----------");
-        getDataFromTable(dataBaseTableName);
-        log("\n---------- Validate users ----------");
-        String[] users= new String[] {"ntu-user","ntu-user","ntu-user1"};
-        String[] passwords= new String[] {"1234","1235","1234"};
-        String[] messages= new String[] {"VALID user and password",
-            "VALID user and INVALID password","INVALID user and VALID password"};
-
-        for (int i=0;i<3;i++){
-            System.out.println("Testing "+messages[i]);
-            if(validateUser(users[i],passwords[i],dataBaseTableName)){
-                log("++++++++++VALID credentials!++++++++++++");
-            }
-            else{
-                log("----------INVALID credentials!----------");
-            }
-        }
-    }
-
-    private static void createTable(String tableName) {
+    public void createTable(String tableName) {
         try {
             // create a database connection
             connection = DriverManager.getConnection(fileName);
@@ -83,8 +53,12 @@ public class Lab11 {
         }
 
     }
-
-    private static void delTable(String tableName) {
+    
+    /**
+     * @brief delete table
+     * @param tableName of type String
+     */
+    public void delTable(String tableName) {
         try {
             // create a database connection
             connection = DriverManager.getConnection(fileName);
@@ -104,35 +78,13 @@ public class Lab11 {
             }
         }
     }
-
-    /**
-     * @brief encode password method
-     * @param[in] plain password of type String
-     * @return encoded password of type String
-     */
-    private static String encodePassword(String plainPassword) {
-        byte[] bPass = plainPassword.getBytes(StandardCharsets.UTF_8);
-        byte[] passBase64 = Base64.getEncoder().encode(bPass);
-        String encodedPassword = new String(passBase64, StandardCharsets.UTF_8);
-        return encodedPassword;
-    }
-
-    /**
-     * @brief decode password method
-     * @param[in] encoded password of type String
-     * @return decoded password of type String
-     */
-    private static String decodePassword(String encodedPassword) {
-        String decodedString = new String(Base64.getDecoder().decode(encodedPassword));
-        return decodedString;
-    }
-
+    
     /**
      * @brief add data to the database method
-     * @param[in] user name of type String
-     * @param[in] user password of type String
+     * @param user name of type String
+     * @param password of type String
      */
-    private static void addDataToDB(String user, String password) {
+    public void addDataToDB(String user, String password) {
         try {
             connection = DriverManager.getConnection(fileName);
             var statement = connection.createStatement();
@@ -160,10 +112,11 @@ public class Lab11 {
             }
         }
     }
-        /**
-         * @brief get data from the Database method
-         */
-    private static void getDataFromTable(String tabName) {
+    /**
+     * @brief get data from the Database method
+     * @param tabName of type String
+     */
+    public void getDataFromTable(String tabName) {
         try {
             connection = DriverManager.getConnection(fileName);
             var statement = connection.createStatement();
@@ -193,11 +146,12 @@ public class Lab11 {
 
     /**
      * @brief decode password method
-     * @param[in] user name as type String
-     * @param[in] plain password of type String
+     * @param user name as type String
+     * @param pass plain password of type String
+     * @param tabName of type String
      * @return true if the credentials are valid, otherwise false
      */
-    private static boolean validateUser(String user, String pass, String tabName) {
+    public boolean validateUser(String user, String pass, String tabName) {
         Boolean flag=false;
         try {
             connection = DriverManager.getConnection(fileName);
@@ -228,13 +182,78 @@ public class Lab11 {
 
         return flag;
     }
+    
+    /**
+     * @brief encode password method
+     * @param plainPassword of type String
+     * @return encodedPassword of type String
+     */
+    public String encodePassword(String plainPassword) {
+        byte[] bPass = plainPassword.getBytes(StandardCharsets.UTF_8);
+        byte[] passBase64 = Base64.getEncoder().encode(bPass);
+        String encodedPassword = new String(passBase64, StandardCharsets.UTF_8);
+        return encodedPassword;
+    }
+
+    /**
+     * @brief decode password method
+     * @param encodedPassword of type String
+     * @return decoded password of type String
+     */
+    protected String decodePassword(String encodedPassword) {
+        String decodedString = new String(Base64.getDecoder().decode(encodedPassword));
+        return decodedString;
+    }
+    
+    /**
+     * @brief get table name
+     * @return table name as String
+     */
+    public String getTableName(){
+        return this.dataBaseTableName;
+    }
 
     /**
      * @brief print a message on screen method
      * @param message of type String
      */
-    private static void log(String message) {
+    public void log(String message) {
         System.out.println(message);
 
+    }
+    
+    /**
+     * @brief main method that populates the database, retrieves values from the
+     * database and attempts to authenticate
+     * @param args - input arguments
+     */
+    public static void main(String[] args) {
+        Lab11 myObj=new Lab11();
+        myObj.log("-------- Simple Tutorial on how to make JDBC connection to SQLite DB ------------");
+        myObj.log("\n---------- Drop table ----------");
+        myObj.delTable(myObj.getTableName());
+        myObj.log("\n---------- Create table ----------");
+        myObj.createTable(myObj.getTableName());
+        myObj.log("\n---------- Adding Users ----------");
+        myObj.addDataToDB("ntu-user", "1234");
+        myObj.addDataToDB("ntu-user2", "1255");
+        myObj.addDataToDB("ntu-user3", "4255");
+        myObj.log("\n---------- get Data from the Table ----------");
+        myObj.getDataFromTable(myObj.getTableName());
+        myObj.log("\n---------- Validate users ----------");
+        String[] users= new String[] {"ntu-user","ntu-user","ntu-user1"};
+        String[] passwords= new String[] {"1234","1235","1234"};
+        String[] messages= new String[] {"VALID user and password",
+            "VALID user and INVALID password","INVALID user and VALID password"};
+
+        for (int i=0;i<3;i++){
+            System.out.println("Testing "+messages[i]);
+            if(myObj.validateUser(users[i],passwords[i],myObj.getTableName())){
+                myObj.log("++++++++++VALID credentials!++++++++++++");
+            }
+            else{
+                myObj.log("----------INVALID credentials!----------");
+            }
+        }
     }
 }
