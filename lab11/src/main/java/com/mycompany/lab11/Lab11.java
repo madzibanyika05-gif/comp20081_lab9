@@ -122,32 +122,7 @@ public class Lab11 {
      * @param password of type String
      */
     public void addDataToDB(String user, String password) throws InvalidKeySpecException {
-        try {
-            connection = DriverManager.getConnection(fileName);
-            var statement = connection.createStatement();
-            statement.setQueryTimeout(timeout);
-            System.out.println("Adding User: " + user + ", Password: " + password);
-            statement.executeUpdate("insert into " + dataBaseTableName + " (name, password) values('" + user + "','" + generateSecurePassword(password) + "')");
-        } catch (SQLException ex) {
-            Logger.getLogger(Lab11.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(Lab11.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
-                try {
-                    if (connection != null) {
-                        connection.close();
-                    }
-                } catch (SQLException e) {
-                    // connection close failed.
-                    System.err.println(e.getMessage());
-                }
-            }
-        }
+        // TODO add code here
     }
 
     /**
@@ -155,29 +130,7 @@ public class Lab11 {
      * @param tabName of type String
      */
     public void getDataFromTable(String tabName) {
-        try {
-            connection = DriverManager.getConnection(fileName);
-            var statement = connection.createStatement();
-            statement.setQueryTimeout(timeout);
-            ResultSet rs = statement.executeQuery("select * from " + tabName);
-            while (rs.next()) {
-                // read the result set
-                System.out.println("User name = " + rs.getString("name"));
-                System.out.println("Encrypted password = " + rs.getString("password"));
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Lab11.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                // connection close failed.
-                System.err.println(e.getMessage());
-            }
-        }
-
+        // TODO add code here
     }
 
     /**
@@ -189,30 +142,7 @@ public class Lab11 {
      */
     public boolean validateUser(String user, String pass, String tabName) throws InvalidKeySpecException {
         Boolean flag = false;
-        try {
-            connection = DriverManager.getConnection(fileName);
-            var statement = connection.createStatement();
-            statement.setQueryTimeout(timeout);
-            ResultSet rs = statement.executeQuery("select name, password from " + tabName);
-            String inPass = generateSecurePassword(pass);
-            // Let's iterate through the java ResultSet
-            while (rs.next()) {
-                if (user.equals(rs.getString("name")) && rs.getString("password").equals(inPass)) {
-                    flag = true;
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Lab11.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                // connection close failed.
-                System.err.println(e.getMessage());
-            }
-        }
+        // TODO add code here
 
         return flag;
     }
