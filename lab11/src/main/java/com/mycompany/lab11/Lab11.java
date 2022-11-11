@@ -85,62 +85,14 @@ public class Lab11 {
      * @param password of type String
      */
     public void addDataToDB(String user, String password) {
-        try {
-            connection = DriverManager.getConnection(fileName);
-            var statement = connection.createStatement();
-            statement.setQueryTimeout(timeout);
-            System.out.println("Adding User: "+user+", Password: "+password);
-            statement.executeUpdate("insert into " + dataBaseTableName + " (name, password) values('" + user + "','" + encodePassword(password) + "')");
-        } catch (SQLException ex) {
-            Logger.getLogger(Lab11.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(Lab11.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
-                try {
-                    if (connection != null) {
-                        connection.close();
-                    }
-                } catch (SQLException e) {
-                    // connection close failed.
-                    System.err.println(e.getMessage());
-                }
-            }
-        }
+        //TODO add your code here
     }
     /**
      * @brief get data from the Database method
      * @param tabName of type String
      */
     public void getDataFromTable(String tabName) {
-        try {
-            connection = DriverManager.getConnection(fileName);
-            var statement = connection.createStatement();
-            statement.setQueryTimeout(timeout);
-            ResultSet rs = statement.executeQuery("select * from "+tabName);
-            while (rs.next()) {
-                // read the result set
-                System.out.println("name = " + rs.getString("name"));
-                System.out.println("password = " + decodePassword(rs.getString("password")));
-            }
-        }
-        catch (SQLException ex) {
-            Logger.getLogger(Lab11.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-        finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                // connection close failed.
-                System.err.println(e.getMessage());
-            }
-        }
+        //TODO add your code here
 
     }
 
@@ -153,33 +105,7 @@ public class Lab11 {
      */
     public boolean validateUser(String user, String pass, String tabName) {
         Boolean flag=false;
-        try {
-            connection = DriverManager.getConnection(fileName);
-            var statement = connection.createStatement();
-            statement.setQueryTimeout(timeout);
-            ResultSet rs = statement.executeQuery("select name, password from "+tabName);
-
-            // Let's iterate through the java ResultSet
-            while (rs.next()) {
-                if (user.equals(rs.getString("name")) && pass.equals(decodePassword(rs.getString("password")))) {
-                    flag=true;
-                }
-            }
-        }
-        catch (SQLException ex) {
-            Logger.getLogger(Lab11.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-        finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                // connection close failed.
-                System.err.println(e.getMessage());
-            }
-        }
-
+        //TODO add your code here
         return flag;
     }
     
@@ -188,7 +114,7 @@ public class Lab11 {
      * @param plainPassword of type String
      * @return encodedPassword of type String
      */
-    public String encodePassword(String plainPassword) {
+    protected String encodePassword(String plainPassword) {
         byte[] bPass = plainPassword.getBytes(StandardCharsets.UTF_8);
         byte[] passBase64 = Base64.getEncoder().encode(bPass);
         String encodedPassword = new String(passBase64, StandardCharsets.UTF_8);
