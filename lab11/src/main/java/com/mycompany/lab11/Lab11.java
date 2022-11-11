@@ -42,7 +42,10 @@ public class Lab11 {
     private int iterations = 10000;
     private int keylength = 256;
     private String saltValue;
-
+    
+    /**
+     * @brief constructor - generates the salt if it doesn't exists or load it from the file .salt
+     */
     Lab11() {
         try {
             File fp = new File(".salt");
@@ -214,7 +217,7 @@ public class Lab11 {
         return flag;
     }
 
-    public String getSaltvalue(int length) {
+    private String getSaltvalue(int length) {
         StringBuilder finalval = new StringBuilder(length);
 
         for (int i = 0; i < length; i++) {
