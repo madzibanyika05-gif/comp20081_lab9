@@ -22,6 +22,12 @@
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>3.4.1</version>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <name>lab9</name>
 </project>
